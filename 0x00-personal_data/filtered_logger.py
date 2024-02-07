@@ -2,9 +2,13 @@
 """A module for filtering the log"""
 from typing import List
 import re
-# import os
+from os import getenv
 import logging
-# import mysql.connector
+from mysql.connector.connection import MySQLConnection
+import mysql.connector
+
+
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(fields: List[str],
@@ -18,12 +22,49 @@ def filter_datum(fields: List[str],
 
 def get_logger() -> logging.Logger:
     """ return the logging logger obj"""
-    pass
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    handle = logging.StreamHandler()
+    handle.setFormatter(RedactingFormatter(fields=PII_FIELDS))
+    logger.addHandler(handle)
+    logger.propagate = False
+    return logger
+
+
+def get_db() -> MySQLConnection:
+    """ connector to a database"""
+    username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = getenv("PERSONAL_DATA_DB_NAME", "my_db")
+    cnt = mysql.connector.connect(
+        host=host,
+        user=username,
+        password=password,
+        database=db_name
+    )
+
+    return cnt
+
+
+def main() -> None:
+    """Display the rows of db"""
+    db = get_db()
+    csr = db.cursor()
+    csr.execute("SELECT * FROM users;")
+    logger = get_logger()
+    for row in csr:
+        msg = (
+            "name={};email={};phone={};ssn={};password={};ip={};"
+            "last_login={};user_agent={};".format(*row)
+        )
+        logger.info(msg)
+    cursor.close()
+    db.close()
 
 
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class
-        """
+    """ Redacting Formatter class"""
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
