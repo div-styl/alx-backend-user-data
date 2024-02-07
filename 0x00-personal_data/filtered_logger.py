@@ -36,6 +36,6 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """fomrt the fitered"""
         notsafe_str = super().format(record)
-        return filter_datum (
+        return filter_datum(
             self.fields, self.REDACTION, notsafe_str, self.SEPARATOR
         )
