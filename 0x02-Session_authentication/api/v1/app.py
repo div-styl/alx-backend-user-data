@@ -26,7 +26,6 @@ else:
     auth = Auth()
 
 
-
 @app.errorhandler(404)
 def not_found(error) -> str:
     """Not found handler"""
@@ -66,12 +65,10 @@ def before_requests():
             elif auth.current_user(request) is None:
                 abort(403)
             else:
-                request.current_user= auth.current_user(request)
+                request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
     app.run(host=host, port=port)
-
-

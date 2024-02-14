@@ -5,7 +5,6 @@ from datetime import datetime as dt, timedelta
 from .session_auth import SessionAuth
 
 
-
 class SessionExpAuth(SessionAuth):
     """ exp auth session class"""
     def __init__(self):
@@ -30,7 +29,7 @@ class SessionExpAuth(SessionAuth):
             return None
         if session_id not in self.user_id_for_session_id:
             return None
-        session_dict =  self.user_id_for_session_id.get(session_id)
+        session_dict = self.user_id_for_session_id.get(session_id)
         if session_dict is None:
             return None
         if self.session_duration <= 0:

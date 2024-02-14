@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 """ module for authentication"""
 from typing import List, TypeVar
 
@@ -39,5 +38,5 @@ class Auth():
         """ return a cookie value"""
         if request is None:
             return None
-        session_name =  os.getenv("SESSION_NAME")
+        session_name = os.getenv("SESSION_NAME")
         return request.cookies.get(session_name)
