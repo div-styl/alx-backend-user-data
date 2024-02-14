@@ -31,5 +31,5 @@ class Auth():
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
-         """ func take reqs and return value type user"""
-         return None
+        """ func take reqs and return value type user"""
+        return None

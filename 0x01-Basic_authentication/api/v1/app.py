@@ -22,20 +22,24 @@ if auth_type == "basic_auth":
 else:
     auth = Auth
 
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ not found handler"""
     return jsonify({"error": "Not found"}), 404
+
 
 @app.errorhandler(401)
 def unauthorized(error: Exception) -> Tuple[jsonify, int]:
     """ unauthorized handler"""
     return jsonify({"error": "Unauthorized"}), 404
 
+
 @app.errorhandler(403)
 def forbidden(error: Exception) -> Tuple[jsonify, int]:
     """ forbidden handler"""
     return jsonify({"error": "forbidden"}), 404
+
 
 @app.before_request
 def handle_request():
@@ -45,7 +49,7 @@ def handle_request():
         return
 
     # execluded paths
-    execulded = [ 
+    execulded = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/'
