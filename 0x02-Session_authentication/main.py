@@ -1,19 +1,49 @@
 #!/usr/bin/env python3
-""" Main 0
+""" Main 2
 """
-import base64
-from api.v1.auth.basic_auth import BasicAuth
-from models.user import User
+from api.v1.auth.session_auth import SessionAuth
 
-""" Create a user test """
-user_email = "bob@hbtn.io"
-user_clear_pwd = "H0lbertonSchool98!"
+sa = SessionAuth()
 
-user = User()
-user.email = user_email
-user.password = user_clear_pwd
-print("New user: {}".format(user.id))
-user.save()
+user_id_1 = "abcde"
+session_1 = sa.create_session(user_id_1)
+print("{} => {}: {}".format(user_id_1, session_1, sa.user_id_by_session_id))
 
-basic_clear = "{}:{}".format(user_email, user_clear_pwd)
-print("Basic Base64: {}".format(base64.b64encode(basic_clear.encode('utf-8')).decode("utf-8")))
+user_id_2 = "fghij"
+session_2 = sa.create_session(user_id_2)
+print("{} => {}: {}".format(user_id_2, session_2, sa.user_id_by_session_id))
+
+print("---")
+
+tmp_session_id = None
+tmp_user_id = sa.user_id_for_session_id(tmp_session_id)
+print("{} => {}".format(tmp_session_id, tmp_user_id))
+
+tmp_session_id = 89
+tmp_user_id = sa.user_id_for_session_id(tmp_session_id)
+print("{} => {}".format(tmp_session_id, tmp_user_id))
+
+tmp_session_id = "doesntexist"
+tmp_user_id = sa.user_id_for_session_id(tmp_session_id)
+print("{} => {}".format(tmp_session_id, tmp_user_id))
+
+print("---")
+
+tmp_session_id = session_1
+tmp_user_id = sa.user_id_for_session_id(tmp_session_id)
+print("{} => {}".format(tmp_session_id, tmp_user_id))
+
+tmp_session_id = session_2
+tmp_user_id = sa.user_id_for_session_id(tmp_session_id)
+print("{} => {}".format(tmp_session_id, tmp_user_id))
+
+print("---")
+
+session_1_bis = sa.create_session(user_id_1)
+print("{} => {}: {}".format(user_id_1, session_1_bis, sa.user_id_by_session_id))
+
+tmp_user_id = sa.user_id_for_session_id(session_1_bis)
+print("{} => {}".format(session_1_bis, tmp_user_id))
+
+tmp_user_id = sa.user_id_for_session_id(session_1)
+print("{} => {}".format(session_1, tmp_user_id))
