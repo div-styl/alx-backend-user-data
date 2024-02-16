@@ -44,7 +44,7 @@ def forbidden(error) -> str:
     return jsonify({'error': 'Forbidden'}), 403
 
 
-@app.befor_request
+@app.before_request
 def before_requests():
     """ handle before rendering """
     if auth is not None:
