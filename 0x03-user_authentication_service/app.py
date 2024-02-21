@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ simple flask app for usr auth features"""
 import logging
 from flask import Flask, abort, jsonify, redirect, request
@@ -8,15 +8,15 @@ logging.disable(logging.WARNING)
 
 AUTH = Auth()
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
-
-@app.route("/", methods=["GET"], strict_slashes=False)
+@app.route("/", methods=["GET"])
 def index() -> str:
     """ JSON payload containing a welcome msg"""
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route("/users", methods=["POST"], strict_slashes=False)
+@app.route("/users", methods=["POST"])
 def users() -> str:
     """ containing various info abt usr"""
     email, password = request.form.get("email"), request.form.get("password")
@@ -27,7 +27,7 @@ def users() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
-@app.route("/sessions", methods=["POST"], strict_slashes=False)
+@app.route("/sessions", methods=["POST"])
 def login() -> str:
     """ Delete session and then redirect """
     session_id = request.cookies.get("session_id")
@@ -38,7 +38,7 @@ def login() -> str:
     return redirect("/")
 
 
-@app.route("/profile", methods=["GET"], strict_slashes=False)
+@app.route("/profile", methods=["GET"])
 def profile() -> str:
     """ payload containing the email if sucessful"""
     session_id = request.cookies.get("session_id")
@@ -48,7 +48,7 @@ def profile() -> str:
     return jsonify({"email": user.email})
 
 
-@app.route("/reset_password", methods=["POST"], strict_slashes=False)
+@app.route("/reset_password", methods=["POST"])
 def get_reset_password_token() -> str:
     """ the email & reset token """
     email = request.form.get("email")
@@ -60,7 +60,7 @@ def get_reset_password_token() -> str:
     return jsonify({"email": email, "reset_token": reset_token})
 
 
-@app.route("/reset_password", methods=["PUT"], strict_slashes=False)
+@app.route("/reset_password", methods=["PUT"])
 def update_password() -> str:
     """ ther user's updated password """
     email = request.form.get("email")
