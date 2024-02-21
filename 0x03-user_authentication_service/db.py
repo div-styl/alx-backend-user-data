@@ -47,14 +47,21 @@ class DB:
 
     def find_user_by(self, **kwargs: Dict[str, str]) -> User:
         """ first row found in users table"""
-        session = self.__session
         try:
-            user = session.query(User).filter_by(**kwargs).one()
-        except NoResultFound:
-            raise NoResultFound()
-        except InvalidRequestError:
-            raise InvalidRequestError()
-        return user
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if not user:
+                raise NoResultFound
+            return user
+        except InvalidRequestError as e:
+            raise e
+        # session = self._session
+        # try:
+        #     user = session.query(User).filter_by(**kwargs).one()
+        # except NoResultFound:
+        #     raise NoResultFound()
+        # except InvalidRequestError:
+        #     raise InvalidRequestError()
+        # return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """updates a users attributes"""
