@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 """Module for auth"""
-import logging
-from typing import Union
-from uuid import uuid4
-
 import bcrypt
-from sqlachemy.orm.exc import NoResultFound
+import logging
+from uuid import uuid4
+from typing import Union
+from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
 from user import User
