@@ -47,7 +47,7 @@ class DB:
 
     def find_user_by(self, **kwargs: Dict[str, str]) -> User:
         """ first row found in users table"""
-        session = self._session
+        session = self.__session
         try:
             user = session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
