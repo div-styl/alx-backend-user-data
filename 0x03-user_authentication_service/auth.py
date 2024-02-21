@@ -4,7 +4,7 @@ import logging
 from typing import Union
 from uuid import uuid4
 
-import bcrypty
+import bcrypt
 from sqlachemy.orm.exc import NoResultFound
 
 from db import DB
