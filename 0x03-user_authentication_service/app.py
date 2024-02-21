@@ -31,12 +31,12 @@ def users() -> str:
 @app.route("/sessions", methods=["POST"])
 def login() -> str:
     """ Delete session and then redirect """
-    session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
-        abort(403)
-    AUTH.destroy_session(user.id)
-    return redirect("/")
+    email, password = request.form.get("email"), request.form.get("password")
+    if not AUTH.valid_login(email, password):
+        abort(401)
+    response = jsonify({"email": email, "message": "logged in"})
+    response.set_cookie("session_id", AUTH.create_session(email))
+    return response
 
 
 @app.route("/profile", methods=["GET"])
