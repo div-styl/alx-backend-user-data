@@ -92,8 +92,8 @@ class Auth:
         self._db.update_user(user.id, reset_token=reset_token)
         return reset_token
 
-    def update_password(self, reset_token: str, password: str) -> None:
-        """ if the reset token is invalid """
+    def update_password(self, reset_token: str, password: str):
+        """ update the password """
         try:
             user = self._db.find_user_by(reset_token=reset_token)
         except NoResultFound:
