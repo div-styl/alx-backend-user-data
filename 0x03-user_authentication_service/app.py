@@ -42,7 +42,7 @@ def login() -> str:
 @app.route("/sessions", methods=["DELETE"])
 def logout() -> str:
     """ Delete session and log out"""
-    session_id = request.cookie.get("session_id")
+    session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
     if not user:
         abort(403)
@@ -82,7 +82,6 @@ def update_password() -> str:
         AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
-
     return jsonify({"email": email, "message": "Password update"})
 
 
