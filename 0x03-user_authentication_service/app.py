@@ -39,6 +39,17 @@ def login() -> str:
     return response
 
 
+@app.route("/sessions", methods=["DELETE"])
+def logout() -> str:
+    """ Delete session and log out"""
+    session_id = request.cookie.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect('/')
+
+
 @app.route("/profile", methods=["GET"])
 def profile() -> str:
     """ payload containing the email if sucessful"""
