@@ -15,7 +15,7 @@ logging.disable(logging.WARNING)
 
 def _hash_password(password: str) -> bytes:
     """ the hashed password """
-    return bcrypty.hashpw(password.encode("utf-8"), bcrypty.gensalt())
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
